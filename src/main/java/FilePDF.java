@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.GregorianCalendar;
 
 class FilePDF {
 
@@ -45,13 +44,12 @@ class FilePDF {
         } catch (DocumentException e) {
             e.printStackTrace();
         }
-
         addTableHeader();
     }
 
     private void addTableHeader() {
 
-        Arrays.stream(PersonTable.getTableHeaders())
+        Arrays.stream(DataGeneration.getTableHeaders())
                 .forEach(columnTitle -> {
                     PdfPCell header = new PdfPCell();
                     header.setPhrase(new Phrase(columnTitle, headerFont));
@@ -59,65 +57,41 @@ class FilePDF {
                 });
     }
 
-    void fillingInData(int numberOfPersons) {
+    void fillingInData(Person[] persons) {
 
-        for (int i = 0; i < numberOfPersons; i++) {
+        for (Person person : persons) {
+
             PdfPCell[] personContent = new PdfPCell[14];
-            setGenderContent(personContent);
-            setAgeContent(personContent);
-            setAddressContent(personContent);
-            setITNContent(personContent);
-            setPersonContent(personContent);
+            personContent[0] = new PdfPCell(new Phrase(person.getName(), contentFont));
+            personContent[1] = new PdfPCell(new Phrase(person.getSurname(), contentFont));
+            personContent[2] = new PdfPCell(new Phrase(person.getPatronymic(), contentFont));
+            personContent[3] = new PdfPCell(new Phrase(String.valueOf(person.getAge()), contentFont));
+            personContent[4] = new PdfPCell(new Phrase(person.getGender(), contentFont));
+            personContent[5] = new PdfPCell(new Phrase(person.getDateOfBirth(), contentFont));
+            personContent[6] = new PdfPCell(new Phrase(String.valueOf(person.getITP()), contentFont));
+            personContent[7] = new PdfPCell(new Phrase(String.valueOf(person.getZipCode()), contentFont));
+            personContent[8] = new PdfPCell(new Phrase(person.getCountry(), contentFont));
+            personContent[9] = new PdfPCell(new Phrase(person.getArea(), contentFont));
+            personContent[10] = new PdfPCell(new Phrase(person.getCity(), contentFont));
+            personContent[11] = new PdfPCell(new Phrase(person.getStreet(), contentFont));
+            personContent[12] = new PdfPCell(new Phrase(String.valueOf(person.getHouse()), contentFont));
+            personContent[13] = new PdfPCell(new Phrase(String.valueOf(person.getApartment()), contentFont));
+            writeInDocument(personContent);
         }
     }
 
-    private void setPersonContent(PdfPCell[] personContent) {
-        Arrays.stream(personContent).forEachOrdered(pdfPCell -> table.addCell(pdfPCell));
-    }
-
-    private void setGenderContent(PdfPCell[] personContent) {
-        int gender = PersonTable.randBetween(0, 1);
-        if (gender == 0) {
-            personContent[NameOfColumn.GENDER.ordinal()] = new PdfPCell(new Phrase("M", contentFont));
-            personContent[NameOfColumn.NAME.ordinal()] = new PdfPCell(new Phrase((String) PersonTable.getRandomPosition(PersonTable.getMaleNames()), contentFont));
-            personContent[NameOfColumn.SURNAME.ordinal()] = new PdfPCell(new Phrase((String) PersonTable.getRandomPosition(PersonTable.getMaleSurnames()), contentFont));
-            personContent[NameOfColumn.PATRONYMIC.ordinal()] = new PdfPCell(new Phrase((String) PersonTable.getRandomPosition(PersonTable.getMalePatronymics()), contentFont));
-        }
-        if (gender == 1) {
-            personContent[NameOfColumn.GENDER.ordinal()] = new PdfPCell(new Phrase("Ж", contentFont));
-            personContent[NameOfColumn.NAME.ordinal()] = new PdfPCell(new Phrase((String) PersonTable.getRandomPosition(PersonTable.getFemaleNames()), contentFont));
-            personContent[NameOfColumn.SURNAME.ordinal()] = new PdfPCell(new Phrase((String) PersonTable.getRandomPosition(PersonTable.getFemaleSurnames()), contentFont));
-            personContent[NameOfColumn.PATRONYMIC.ordinal()] = new PdfPCell(new Phrase((String) PersonTable.getRandomPosition(PersonTable.getFemalePatronymics()), contentFont));
+    private void writeInDocument(PdfPCell[] pdfPCells){
+        for(PdfPCell pdfPCell1 : pdfPCells){
+            table.addCell(pdfPCell1);
         }
     }
 
-    private void setAgeContent(PdfPCell[] personContent) {
-        GregorianCalendar dateOfBirth = PersonTable.createAgeContent();
-        personContent[NameOfColumn.DATE_OF_BIRTH.ordinal()] = new PdfPCell(new Phrase(PersonTable.gregorianCalendarToString(dateOfBirth), contentFont));
-        personContent[NameOfColumn.AGE.ordinal()] = new PdfPCell(new Phrase(String.valueOf(PersonTable.calcAge(dateOfBirth)), contentFont));
-    }
-
-    private void setAddressContent(PdfPCell[] personContent) {
-        personContent[NameOfColumn.ZIP_CODE.ordinal()] = new PdfPCell(new Phrase(String.valueOf(PersonTable.randBetween(100000, 200000)), contentFont));
-        personContent[NameOfColumn.COUNTRY.ordinal()] = new PdfPCell(new Phrase((String) PersonTable.getRandomPosition(PersonTable.getCountries()), contentFont));
-        personContent[NameOfColumn.AREA.ordinal()] = new PdfPCell(new Phrase((String) PersonTable.getRandomPosition(PersonTable.getAreas()), contentFont));
-        personContent[NameOfColumn.CITY.ordinal()] = new PdfPCell(new Phrase((String) PersonTable.getRandomPosition(PersonTable.getCities()), contentFont));
-        personContent[NameOfColumn.STREET.ordinal()] = new PdfPCell(new Phrase((String) PersonTable.getRandomPosition(PersonTable.getStreets()), contentFont));
-        personContent[NameOfColumn.HOUSE.ordinal()] = new PdfPCell(new Phrase(String.valueOf(PersonTable.randBetween(0, 200)), contentFont));
-        personContent[NameOfColumn.APARTMENT.ordinal()] = new PdfPCell(new Phrase(String.valueOf(PersonTable.randBetween(0, 500)), contentFont));
-    }
-
-    private void setITNContent(PdfPCell[] personContent) {
-        String ITN = PersonTable.createITNContent();
-        personContent[NameOfColumn.ITN.ordinal()] = new PdfPCell(new Phrase(ITN, contentFont));
-    }
-
-    void closeFilePDF() {
-        try {
-            document.add(table);
-        } catch (DocumentException e) {
-            e.printStackTrace();
+        void closeFilePDF() {
+            try {
+                document.add(table);
+            } catch (DocumentException e) {
+                e.printStackTrace();
+            }
+            document.close();
         }
-        document.close();
     }
-}
