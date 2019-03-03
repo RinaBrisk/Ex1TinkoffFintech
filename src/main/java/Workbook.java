@@ -18,7 +18,7 @@ class Workbook {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        System.out.println("Файл создан. Путь: " + BOOK_PATH);
+        System.out.println("File created.Path: " + BOOK_PATH);
         sheet = book.createSheet("Страница 1");
     }
 

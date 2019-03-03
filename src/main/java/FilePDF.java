@@ -33,7 +33,7 @@ class FilePDF {
         } catch (DocumentException | IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Файл создан. Путь: " + DOCUMENT_PATH);
+        System.out.println("File created.Path: " + DOCUMENT_PATH);
     }
 
     void createTable() {
