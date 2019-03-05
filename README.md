@@ -1,4 +1,3 @@
-# Ex1TinkoffFintech
 
 Учебный проект Tinkoff Fintech
 ==============================
