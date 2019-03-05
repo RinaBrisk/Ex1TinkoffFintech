@@ -1,4 +1,4 @@
 atlassian-ide-plugin.wml
-'.idea/' 
-'*.iml' 
-'.idea/**/contentModel.xml' 
+*.idea
+*.iml
+.idea/**/contentModel.xml
