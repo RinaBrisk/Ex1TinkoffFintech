@@ -1,17 +1,25 @@
+package documentFormat.workbook;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.*;
+import person.Person;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 
-class Workbook {
+public class Workbook {
 
     private XSSFWorkbook book;
     private XSSFSheet sheet;
     private FileOutputStream fileOut;
     private static final String BOOK_PATH = System.getProperty("user.home") + "\\Desktop\\persons.xlsx";
 
-    void createBook() {
+    public void workbookCreating(Person[] persons) {
+        this.createBook();
+        this.headerCreating();
+        this.fillingInData(persons);
+        this.closeBook();
+    }
+
+    private void createBook() {
 
         book = new XSSFWorkbook();
         try {
@@ -19,14 +27,11 @@ class Workbook {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        System.out.println("File created.Path: " + BOOK_PATH);
+        System.out.println("Файл создан. Путь: " + BOOK_PATH);
         sheet = book.createSheet("Страница 1");
     }
 
-    void fillingInData(Person[] persons) {
-
-        XSSFRow headerRow = sheet.createRow((short) 0);
-        createHeaders(headerRow);
+    private void fillingInData(Person[] persons) {
 
         for (int i = 0; i < persons.length; i++) {
 
@@ -37,7 +42,7 @@ class Workbook {
             cellContents[3] = new CellContent(String.valueOf(persons[i].getAge()), CellType.NUMERIC);
             cellContents[4] = new CellContent(persons[i].getGender(), CellType.STRING);
             cellContents[5] = new CellContent(persons[i].getDateOfBirth(), CellType.STRING);
-            cellContents[6] = new CellContent(String.valueOf(persons[i].getITP()), CellType.NUMERIC);
+            cellContents[6] = new CellContent(String.valueOf(persons[i].getItp()), CellType.NUMERIC);
             cellContents[7] = new CellContent(String.valueOf(persons[i].getZipCode()), CellType.NUMERIC);
             cellContents[8] = new CellContent(persons[i].getCountry(), CellType.STRING);
             cellContents[9] = new CellContent(persons[i].getArea(), CellType.STRING);
@@ -56,7 +61,7 @@ class Workbook {
 
     private void writeInBook(XSSFRow row, CellContent[] cellContents) {
         for (int i = 0; i < 14; i++) {
-            if (cellContents[i] == null) {
+            if ((cellContents[i].getName().equals("")) || (cellContents[i].getCellType() == null)) {
                 System.out.println("Ошибка. Поле № " + i + " не инициализировано.");
             }
             XSSFCell cell = row.createCell(i);
@@ -65,9 +70,14 @@ class Workbook {
         }
     }
 
-    private void createHeaders(XSSFRow headerRow) {
+    private void headerCreating() {
+        CellContent[] headerCellContent = createHeaderContent();
+        XSSFRow headerRow = sheet.createRow((short) 0);
+        setHeader(createHeaderStyle(), headerRow, headerCellContent);
+    }
 
-        CellContent[] headerCellContents = new CellContent[]{
+    private CellContent[] createHeaderContent() {
+        return new CellContent[]{
                 new CellContent("Имя", CellType.STRING),
                 new CellContent("Фамилия", CellType.STRING),
                 new CellContent("Отчество", CellType.STRING),
@@ -83,20 +93,26 @@ class Workbook {
                 new CellContent("Дом", CellType.NUMERIC),
                 new CellContent("Квартира", CellType.NUMERIC)
         };
+    }
+
+    private XSSFCellStyle createHeaderStyle() {
         XSSFCellStyle style = book.createCellStyle();
         XSSFFont font = book.createFont();
         font.setBold(true);
         style.setFont(font);
+        return style;
+    }
 
+    private void setHeader(XSSFCellStyle style, XSSFRow headerRow, CellContent[] headerCellContent) {
         for (int i = 0; i < 14; i++) {
             XSSFCell cell = headerRow.createCell(i);
-            cell.setCellType(headerCellContents[i].getCellType());
-            cell.setCellValue(headerCellContents[i].getName());
+            cell.setCellType(headerCellContent[i].getCellType());
+            cell.setCellValue(headerCellContent[i].getName());
             cell.setCellStyle(style);
         }
     }
 
-    void closeBook() {
+    private void closeBook() {
         try {
             book.write(fileOut);
             fileOut.close();

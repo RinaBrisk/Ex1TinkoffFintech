@@ -1,30 +1,30 @@
-Бродвей
-Арбат
-Баумана
-Покровская
-Пятая Авеню
-Уолл Стрит
-Елисейские Поля
-Волкин Стрит
-Красных Фонарей
-Бульвар Капуцинок
-Мэдисон-Авенью
-Дерибасовская
-Ломбард Стрит
-Ваци
-Рамбла
-Бульвар Сансет
-Андраши
-Родео
-Проспект Мира
-Шмидта
-Винарна
-Болдуин-стрит
-Янг
-Риванда
-Шопен
-Лазо
-Росси
-Планировочная
-Зеленцова
-Ланская
+Broadway
+Arbat
+Bauman
+Pokrovskaya
+Fifth Avenue
+Wall Street
+Champs Elysees
+Volkin Street
+Red Light
+Capuchin Boulevard
+Madison Avenue
+Deribasovskaya
+Lombard Street
+Vaci
+Rambla
+Sunset Boulevard
+Andrassy
+Rodeo
+Peace Avenue
+Schmidt
+Vinarna
+Baldwin Street
+Young
+Rivanda
+Chopin
+Lazo
+Rossi
+Planning
+Zelentsova
+Lanskaya
