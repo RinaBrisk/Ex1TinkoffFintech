@@ -13,7 +13,7 @@ public class Location implements Serializable {
     private String city;
 
     @SerializedName("state")
-    private String country;
+    private String area;
 
     public String getStreet() {
         return street;
@@ -23,7 +23,7 @@ public class Location implements Serializable {
         return city;
     }
 
-    public String getCountry() {
-        return country;
+    public String getArea() {
+        return area;
     }
 }

@@ -160,9 +160,9 @@ public class Person {
     }
 
     private void setAPIAddressContent(Person person, PersonsDTO personDTO) {
-        person.setCountry(Helper.setFirstCapitalLetter(personDTO.getLocation().getCountry()));
+        person.setCountry((String)Helper.getRandomPosition(Helper.getCountries()));
         person.setZipCode(Helper.randBetween(100000, 200000));
-        person.setArea((String) Helper.getRandomPosition(Helper.getAreas()));
+        person.setArea(Helper.setFirstCapitalLetter(personDTO.getLocation().getArea()));
         person.setCity(Helper.setFirstCapitalLetter(personDTO.getLocation().getCity()));
         person.setStreet(Helper.setFirstCapitalLetter(
                         Helper.deleteNumbersFromString(personDTO.getLocation().getStreet())));
