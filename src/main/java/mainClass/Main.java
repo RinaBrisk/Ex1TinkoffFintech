@@ -30,5 +30,7 @@ public class Main {
 
         FilePDF filePDF = new documentFormat.FilePDF();
         filePDF.filePDFCreating(persons);
+
+        System.exit(0);
     }
 }

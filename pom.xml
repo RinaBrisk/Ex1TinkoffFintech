@@ -7,6 +7,8 @@
     <artifactId>Ex1TinkoffFintech</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+
+
     <name>Ex1TinkoffFintech</name>
     <build>
         <resources>
@@ -48,6 +50,7 @@
                 <configuration>
                     <source>8</source>
                     <target>8</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
         </plugins>

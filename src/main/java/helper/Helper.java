@@ -150,5 +150,4 @@ public class Helper {
     public static String deleteNumbersFromString(String str){
         return str.replaceAll("[^A-Za-zА-Яа-я]", "");
     }
-
 }
