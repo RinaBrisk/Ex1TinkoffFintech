@@ -1,10 +1,8 @@
 package mainClass;
 
-import documentFormat.FilePDF;
-import documentFormat.workbook.Workbook;
 import helper.Helper;
 import network.PersonsDTO;
-import network.RandomApi;
+import person.DataAcquisition;
 import person.Person;
 
 import java.util.List;
@@ -18,19 +16,28 @@ public class Main {
         int numberOfPersons = Person.getNumberOfPersons();
         Person[] persons = new Person[numberOfPersons];
 
-        RandomApi randomApi = new RandomApi();
-        randomApi.buildClient();
-        randomApi.getSearchRequest(numberOfPersons);
+        DataAcquisition dataAcquisition = new DataAcquisition();
+        List<PersonsDTO> personsData = dataAcquisition.getDataFromAPI(numberOfPersons);
+        if (personsData == null) {
+            //          personsData = dataAcquisition.getDataFromDatabase();
+            //         if(personsData == null){
+            //загрузить из файла
+        } else {
 
-        List<PersonsDTO> personsData = randomApi.getPersonsData();
-        Person.setPersonsData(personsData, persons);
-
-        Workbook workbook = new Workbook();
-        workbook.workbookCreating(persons);
-
-        FilePDF filePDF = new documentFormat.FilePDF();
-        filePDF.filePDFCreating(persons);
-
-        System.exit(0);
+            //записать в БД
+            //загрузить из API
+        }
     }
+
+//        Person.setPersonsData(personsData, persons);
+
+//        Workbook workbook = new Workbook();
+//        workbook.workbookCreating(persons);
+//
+//        FilePDF filePDF = new documentFormat.FilePDF();
+//        filePDF.filePDFCreating(persons);
+//
+//        System.exit(0);
+
 }
+            }

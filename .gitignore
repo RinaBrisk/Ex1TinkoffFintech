@@ -2,3 +2,4 @@ atlassian-ide-plugin.wml
 *.idea
 *.iml
 .idea/**/contentModel.xml
+ 'MySqlConnection.txt'  

@@ -112,11 +112,14 @@ public class Person {
 
     public static void setPersonsData(List<PersonsDTO> personsData, Person[] persons){
         if(personsData != null){
+            //записать данные в БД
             for (int i = 0; i < persons.length; i++) {
                 persons[i] = new Person();
                 persons[i].setDataFromRandomAPI(personsData.get(i));
             }
         }else{
+            //попытаться загрузить данные из БД
+            //если пусто, то делать то, что ниже
             for (int i = 0; i < persons.length; i++) {
                 persons[i] = new Person();
                 persons[i].setDataFromResources();
@@ -160,9 +163,9 @@ public class Person {
     }
 
     private void setAPIAddressContent(Person person, PersonsDTO personDTO) {
-        person.setCountry((String)Helper.getRandomPosition(Helper.getCountries()));
+        person.setCountry(Helper.setFirstCapitalLetter(personDTO.getLocation().getCountry()));
         person.setZipCode(Helper.randBetween(100000, 200000));
-        person.setArea(Helper.setFirstCapitalLetter(personDTO.getLocation().getArea()));
+        person.setArea((String) Helper.getRandomPosition(Helper.getAreas()));
         person.setCity(Helper.setFirstCapitalLetter(personDTO.getLocation().getCity()));
         person.setStreet(Helper.setFirstCapitalLetter(
                         Helper.deleteNumbersFromString(personDTO.getLocation().getStreet())));

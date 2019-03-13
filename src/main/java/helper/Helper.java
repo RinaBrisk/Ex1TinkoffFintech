@@ -24,6 +24,7 @@ public class Helper {
     private static final String[] tableHeaders = {"Имя", "Фамилия", "Отчество", "Возраст", "Пол(м/ж)",
             "Дата рождения", "ИНН", "Почтовый индекс", "Страна", "Область", "Город", "Улица", "Дом", "Квартира"};
     private static final String PES_PATH = "src/main/resources/";
+    private static List<String> mySqlConnection;
 
     public static List<String> getMaleNames() {
         return maleNames;
@@ -58,6 +59,7 @@ public class Helper {
     public static String[] getTableHeaders() {
         return tableHeaders;
     }
+    public static String getMySqlConnection(int i){return mySqlConnection.get(i);}
 
     public static void createFileResources() {
 
@@ -73,6 +75,8 @@ public class Helper {
         areas = readFromFile(PES_PATH +"Areas.txt");
         streets = readFromFile(PES_PATH + "Streets.txt");
         cities = readFromFile(PES_PATH + "Cities.txt");
+
+        mySqlConnection = readFromFile(PES_PATH + "MySqlConnection.txt");
     }
 
     public static int randBetween(int start, int end) {
