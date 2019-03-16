@@ -1,31 +1,36 @@
 package mySQL;
 
 import helper.Helper;
-import network.PersonsDTO;
+import person.Person;
 
 import java.sql.*;
 import java.util.List;
 
 public class MySql {
 
-    private Connection connection;
-    private static Statement stmt;
-    private static ResultSet rs;
+    private static Connection connection;
+    private static Statement statement;
+    private static ResultSet resultSet;
 
     enum mySqlConData {CONNECTION_STRING, LOGIN, PASSWORD}
 
-    public void getConnection() {
+    public static void getConnection() {
         try {
             connection = DriverManager.getConnection(Helper.getMySqlConnection(mySqlConData.CONNECTION_STRING.ordinal()),
-                                                     Helper.getMySqlConnection(mySqlConData.LOGIN.ordinal()),
-                                                     Helper.getMySqlConnection(mySqlConData.PASSWORD.ordinal()));
+                    Helper.getMySqlConnection(mySqlConData.LOGIN.ordinal()),
+                    Helper.getMySqlConnection(mySqlConData.PASSWORD.ordinal()));
         } catch (SQLException e) {
             System.out.println("Can't get connection. Incorrect URL");
             e.printStackTrace();
         }
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void breakConnection() {
+    public static void breakConnection() {
         try {
             connection.close();
         } catch (SQLException e) {
@@ -34,35 +39,71 @@ public class MySql {
         }
     }
 
-    public void getQuery() throws SQLException {
-        String query = "select count(*) from persons";
 
-        // getting Statement object to execute query
-
-            stmt = connection.createStatement();
-
-        // executing SELECT query
-
-            rs = stmt.executeQuery(query);
-
-        while (rs.next()) {
-            int count = rs.getInt(1);
-            System.out.println("Total number of books in the table : " + count);
+    public static int setDataInAddressTable(Person person) {
+        int id = 0;
+        String query = "INSERT INTO persons.address (postcode, country, region, city, street, house, flat) \n" +
+                " VALUES (" + person.getZipCode() + ", '" + person.getCountry() + "', '" + person.getArea() + "', '" +
+                person.getCity() + "', '" + person.getStreet() + "', " + person.getHouse() + ", " + person.getApartment() + ");";
+        try {
+            statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+            resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                id = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return id;
     }
 
-    public void setData(List<PersonsDTO> personsData){
-        for(int i = 0; i < personsData.size(); i++){
-            String query = "INSERT INTO persons.persons (id, postcode, region, city, street, house, flat) \n" +
-                    " VALUES ("+ i + ", 'Head First Java', 'Kathy Sieara');";
-        }
-
-        // executing SELECT query
+    public static void setDataInPersonsTable(Person person, int personId) {
+        String query = "INSERT INTO persons.persons (surname, name, middlename, birthday, gender, inn, address_id, age) \n" +
+                " VALUES (" + "'" + person.getSurname() + "', '" + person.getName() + "', '" + person.getPatronymic() + "', " +
+                "STR_TO_DATE('" + person.getDateOfBirth() + "','%d-%m-%Y'),'" + person.getGender() + "', " + person.getItp() +
+                ", " + personId + ", " + person.getAge() + ");";
         try {
-            stmt.executeUpdate(query);
+            statement.executeUpdate(query);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    public static void requestForGetData(List<Person> personsData, int numberOfPersons) {
+        String query = "SELECT * FROM persons.persons JOIN persons.address \n where persons.address_id = address.id \n" +
+                "ORDER BY RAND() LIMIT " + numberOfPersons;
+            try {
+                resultSet = statement.executeQuery(query);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            databaseToPersons(resultSet, personsData);
+    }
+
+    private static void databaseToPersons(ResultSet resultSet, List<Person> personsData){
+        try {
+            while (resultSet.next()) {
+                Person person = new Person();
+                person.setSurname(resultSet.getString(2));
+                person.setName(resultSet.getString(3));
+                person.setPatronymic(resultSet.getString(4));
+                person.setDateOfBirth(Helper.createCorrectFormatDateOfBirth(resultSet.getString(5)));
+                person.setGender(resultSet.getString(6));
+                person.setItp(resultSet.getString(7));
+                person.setAge(resultSet.getInt(9));
+                person.setZipCode(Integer.valueOf(resultSet.getString(11)));
+                person.setCountry(resultSet.getString(12));
+                person.setArea(resultSet.getString(13));
+                person.setCity(resultSet.getString(14));
+                person.setStreet(resultSet.getString(15));
+                person.setHouse(resultSet.getInt(16));
+                person.setApartment(resultSet.getInt(17));
+                personsData.add(person);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 

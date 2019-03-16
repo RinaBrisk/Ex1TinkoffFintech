@@ -21,7 +21,7 @@ public class Helper {
     private static List<String> areas;
     private static List<String> streets;
     private static List<String> cities;
-    private static final String[] tableHeaders = {"Имя", "Фамилия", "Отчество", "Возраст", "Пол(м/ж)",
+    private static final String[] tableHeaders = {"Фамилия", "Имя", "Отчество", "Возраст", "Пол(м/ж)",
             "Дата рождения", "ИНН", "Почтовый индекс", "Страна", "Область", "Город", "Улица", "Дом", "Квартира"};
     private static final String PES_PATH = "src/main/resources/";
     private static List<String> mySqlConnection;

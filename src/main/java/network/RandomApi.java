@@ -1,4 +1,6 @@
 package network;
+import generation.DataGeneration;
+import person.Person;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -10,11 +12,8 @@ public final class RandomApi {
 
     private static final String URL = "https://randomuser.me";
     private Retrofit retrofit;
-    private List<PersonsDTO> personsData;
+    private static List<PersonsDTO> personsDtoData;
     private Response<DefaultResponse<List<PersonsDTO>>> response;
-    public List<PersonsDTO> getPersonsData() {
-        return personsData;
-    }
 
     public void  buildClient() {
 
@@ -24,7 +23,7 @@ public final class RandomApi {
                 .build();
     }
 
-    public void getSearchRequest(int numberOfPersons){
+    public List<PersonsDTO> getSearchRequest(int numberOfPersons){
         PersonsEndpoint personsEndpoint = retrofit.create(PersonsEndpoint.class);
         try {
             response = personsEndpoint.search(numberOfPersons,"us").execute();
@@ -32,15 +31,28 @@ public final class RandomApi {
         } catch (IOException e) {
             System.out.println("Request error: " + e.toString() + "\nData will be taken from file resources.");
         }
+        return personsDtoData;
     }
 
     private void checkResponse(Response<DefaultResponse<List<PersonsDTO>>> response){
             final DefaultResponse<List<PersonsDTO>> body = response.body();
             if(body != null){
-                personsData = body.getResults();
+                personsDtoData = body.getResults();
             }
             else{
                 System.out.println("In the response is an empty body");
             }
     }
+
+    public static void personsDtoToPersons(List<Person> personsData){
+        for (PersonsDTO personDto : personsDtoData) {
+            Person person = new Person();
+            person.setAPIGenderContent(personDto);
+            person.setAPIAgeContent(personDto);
+            DataGeneration.createITNContent(person);
+            person.setAPIAddressContent(personDto);
+            personsData.add(person);
+        }
+    }
+
 }

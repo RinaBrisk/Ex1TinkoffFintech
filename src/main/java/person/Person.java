@@ -110,67 +110,42 @@ public class Person {
         return Helper.randBetween(1, 30);
     }
 
-    public static void setPersonsData(List<PersonsDTO> personsData, Person[] persons){
-        if(personsData != null){
-            //записать данные в БД
-            for (int i = 0; i < persons.length; i++) {
-                persons[i] = new Person();
-                persons[i].setDataFromRandomAPI(personsData.get(i));
-            }
-        }else{
-            //попытаться загрузить данные из БД
-            //если пусто, то делать то, что ниже
-            for (int i = 0; i < persons.length; i++) {
-                persons[i] = new Person();
-                persons[i].setDataFromResources();
-            }
-        }
+    void setDataFromResources() {
+            DataGeneration.createGenderContent(this);
+            DataGeneration.createAgeContent(this);
+            DataGeneration.createITNContent(this);
+            DataGeneration.createAddressContent(this);
     }
 
-    private void setDataFromRandomAPI(PersonsDTO personData) {
-        setAPIGenderContent(this, personData);
-        setAPIAgeContent(this, personData);
-        DataGeneration.createITNContent(this);
-        setAPIAddressContent(this, personData);
-    }
+    public void setAPIGenderContent(PersonsDTO personDTO) {
 
-    private void setDataFromResources() {
-        DataGeneration.createGenderContent(this);
-        DataGeneration.createAgeContent(this);
-        DataGeneration.createITNContent(this);
-        DataGeneration.createAddressContent(this);
-    }
-
-    private void setAPIGenderContent(Person person, PersonsDTO personDTO) {
-
-        person.setName(Helper.setFirstCapitalLetter(personDTO.getName().getFirst()));
-        person.setSurname(Helper.setFirstCapitalLetter(personDTO.getName().getLast()));
+        this.setName(Helper.setFirstCapitalLetter(personDTO.getName().getFirst()));
+        this.setSurname(Helper.setFirstCapitalLetter(personDTO.getName().getLast()));
 
         if (personDTO.getGender().equals("male")) {
-            person.setGender("М");
-            person.setPatronymic((String) Helper.getRandomPosition(Helper.getMalePatronymics()));
+            this.setGender("М");
+            this.setPatronymic((String) Helper.getRandomPosition(Helper.getMalePatronymics()));
         } else {
-            person.setGender("Ж");
-            person.setPatronymic((String) Helper.getRandomPosition(Helper.getFemalePatronymics()));
+            this.setGender("Ж");
+            this.setPatronymic((String) Helper.getRandomPosition(Helper.getFemalePatronymics()));
         }
     }
 
-    private void setAPIAgeContent(Person person, PersonsDTO personDTO) {
-        person.setDateOfBirth(
+    public void setAPIAgeContent(PersonsDTO personDTO) {
+        this.setDateOfBirth(
                 Helper.createCorrectFormatDateOfBirth(
                         personDTO.getDateOfBirth().getDate()));
-        person.setAge(personDTO.getDateOfBirth().getAge());
+        this.setAge(personDTO.getDateOfBirth().getAge());
     }
 
-    private void setAPIAddressContent(Person person, PersonsDTO personDTO) {
-        person.setCountry(Helper.setFirstCapitalLetter(personDTO.getLocation().getCountry()));
-        person.setZipCode(Helper.randBetween(100000, 200000));
-        person.setArea((String) Helper.getRandomPosition(Helper.getAreas()));
-        person.setCity(Helper.setFirstCapitalLetter(personDTO.getLocation().getCity()));
-        person.setStreet(Helper.setFirstCapitalLetter(
-                        Helper.deleteNumbersFromString(personDTO.getLocation().getStreet())));
-        person.setHouse(Helper.randBetween(1, 200));
-        person.setApartment(Helper.randBetween(1, 500));
+    public void setAPIAddressContent(PersonsDTO personDTO) {
+        this.setCountry(Helper.setFirstCapitalLetter((String)Helper.getRandomPosition(Helper.getCountries())));
+        this.setZipCode(Helper.randBetween(100000, 200000));
+        this.setArea(Helper.setFirstCapitalLetter(personDTO.getLocation().getArea()));
+        this.setCity(Helper.setFirstCapitalLetter(personDTO.getLocation().getCity()));
+        this.setStreet(Helper.setFirstCapitalLetter(
+                Helper.deleteNumbersFromString(personDTO.getLocation().getStreet())));
+        this.setHouse(Helper.randBetween(1, 200));
+        this.setApartment(Helper.randBetween(1, 500));
     }
-
 }

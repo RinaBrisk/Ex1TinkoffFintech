@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 public class FilePDF {
 
@@ -22,10 +23,10 @@ public class FilePDF {
     private Font contentFont;
     private PdfPTable table;
 
-    public void filePDFCreating(Person[] persons) {
+    public void filePDFCreating(List<Person> personsData) {
         this.createFilePDF();
         this.createTable();
-        this.fillingInData(persons);
+        this.fillingInData(personsData);
         this.closeFilePDF();
     }
 
@@ -73,13 +74,13 @@ public class FilePDF {
                 });
     }
 
-    private void fillingInData(Person[] persons) {
+    private void fillingInData(List<Person> personsData) {
 
-        for (Person person : persons) {
+        for (Person person : personsData) {
 
             PdfPCell[] personContent = new PdfPCell[14];
-            personContent[0] = new PdfPCell(new Phrase(person.getName(), contentFont));
-            personContent[1] = new PdfPCell(new Phrase(person.getSurname(), contentFont));
+            personContent[0] = new PdfPCell(new Phrase(person.getSurname(), contentFont));
+            personContent[1] = new PdfPCell(new Phrase(person.getName(), contentFont));
             personContent[2] = new PdfPCell(new Phrase(person.getPatronymic(), contentFont));
             personContent[3] = new PdfPCell(new Phrase(String.valueOf(person.getAge()), contentFont));
             personContent[4] = new PdfPCell(new Phrase(person.getGender(), contentFont));
