@@ -19,14 +19,14 @@ java -jar target/Ex1TinkoffFintech-1.0-jar-with-dependencies.jar
 Подключение к базе
 --------------------
 Для того, чтобы подключиться к базе, нужно:
-1. Создать файл "MySqlConnection.txt"
+1. Создать файл "MySqlConnection.txt".
 2. Записать в файл:
   - строку подключения
   - логин
-  - пароль(все с новой строки);
+  - пароль(все с новой строки).
 Пример строки подключения:
 ```
 jdbc:mysql://localhost:XXXX/persons?verifyServerCertificate=false&useSSL=false&requireSSL=false&useLegacyDatetimeCode=false&amp&serverTimezone=UTC
 ```
-3. Поместить файл в папку с ресурсами("src/main/resources/");
+3. Поместить файл в папку с ресурсами("src/main/resources/").
 
