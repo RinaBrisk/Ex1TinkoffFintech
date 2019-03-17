@@ -4,8 +4,6 @@ import generation.DataGeneration;
 import helper.Helper;
 import network.PersonsDTO;
 
-import java.util.List;
-
 public class Person {
     private String name;
     private String surname;
@@ -110,7 +108,7 @@ public class Person {
         return Helper.randBetween(1, 30);
     }
 
-    void setDataFromResources() {
+    public void setDataFromResources() {
             DataGeneration.createGenderContent(this);
             DataGeneration.createAgeContent(this);
             DataGeneration.createITNContent(this);

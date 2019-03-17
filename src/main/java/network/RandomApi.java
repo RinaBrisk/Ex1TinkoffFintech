@@ -29,7 +29,7 @@ public final class RandomApi {
             response = personsEndpoint.search(numberOfPersons,"us").execute();
             checkResponse(response);
         } catch (IOException e) {
-            System.out.println("Request error: " + e.toString() + "\nData will be taken from file resources.");
+            System.out.println("Request error: " + e.toString());
         }
         return personsDtoData;
     }

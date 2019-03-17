@@ -39,14 +39,28 @@ public class MySql {
         }
     }
 
+    public static Integer personIsPresent(Person person) throws SQLException {
+        String query = "SELECT * FROM persons.persons WHERE name = '" + person.getName() + "' AND surname = '"
+                + person.getSurname() + "' AND middlename = '" + person.getPatronymic() + "';";
+        try {
+            statement.executeQuery(query);
+            resultSet = statement.getResultSet();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if(resultSet.next()){
+            return resultSet.getInt(8);
+        }else return null;
+    }
 
-    public static int setDataInAddressTable(Person person) {
+
+    public static int insertDataInAddressTable(Person person) {
         int id = 0;
         String query = "INSERT INTO persons.address (postcode, country, region, city, street, house, flat) \n" +
                 " VALUES (" + person.getZipCode() + ", '" + person.getCountry() + "', '" + person.getArea() + "', '" +
                 person.getCity() + "', '" + person.getStreet() + "', " + person.getHouse() + ", " + person.getApartment() + ");";
         try {
-            statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+            statement.execute(query, Statement.RETURN_GENERATED_KEYS);
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 id = resultSet.getInt(1);
@@ -57,7 +71,7 @@ public class MySql {
         return id;
     }
 
-    public static void setDataInPersonsTable(Person person, int personId) {
+    public static void insertDataInPersonsTable(Person person, int personId) {
         String query = "INSERT INTO persons.persons (surname, name, middlename, birthday, gender, inn, address_id, age) \n" +
                 " VALUES (" + "'" + person.getSurname() + "', '" + person.getName() + "', '" + person.getPatronymic() + "', " +
                 "STR_TO_DATE('" + person.getDateOfBirth() + "','%d-%m-%Y'),'" + person.getGender() + "', " + person.getItp() +
@@ -68,6 +82,29 @@ public class MySql {
             e.printStackTrace();
         }
     }
+
+    public static void updateDataInAddressTable(Person person, int addressId){
+        String query = "UPDATE persons.address SET postcode = '" + person.getZipCode() + "', country = '" + person.getCountry() + "', region = '" +
+        person.getArea() + "', city = '" + person.getCity() + "', street = '" + person.getStreet() + "', house = '" + person.getHouse() + "', flat = '" + person.getApartment() + "' " +
+                "WHERE id = '" + addressId + "';";
+        try {
+            statement.execute(query);
+            resultSet = statement.getGeneratedKeys();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateDataInPersonsTable(Person person, int addressId){
+        String query = "UPDATE persons.persons SET birthday = '" + person.getDateOfBirth() + "', inn = '" + person.getItp() + "', age = '" +
+                person.getAge() +"' " + "WHERE address_id = '" + addressId + "';";
+        try {
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static void requestForGetData(List<Person> personsData, int numberOfPersons) {
         String query = "SELECT * FROM persons.persons JOIN persons.address \n where persons.address_id = address.id \n" +

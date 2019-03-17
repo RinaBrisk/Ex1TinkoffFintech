@@ -1,9 +1,11 @@
-package person;
+package helper;
 
 import mySQL.MySql;
 import network.PersonsDTO;
 import network.RandomApi;
+import person.Person;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +19,9 @@ public class DataManager {
         List<PersonsDTO> personsDtoData = getDataFromAPI(numberOfPersons);
         if (personsDtoData == null) {
             System.out.println("No internet connection.\nWe will receive data from the database.");
+            MySql.getConnection();
             getDataFromDatabase(numberOfPersons);
+            MySql.breakConnection();
             if(personsData.size() != numberOfPersons){
                 System.out.println("There is not enough data in the database.\n" +
                         "We will receive data from resource files.");
@@ -25,8 +29,9 @@ public class DataManager {
             }
         } else {
             RandomApi.personsDtoToPersons(personsData);
+            MySql.getConnection();
             setDataInDatabase(personsData);
-            //добавить перезапись существущих ФИО
+            MySql.breakConnection();
         }
     }
 
@@ -37,8 +42,19 @@ public class DataManager {
 
     private void setDataInDatabase(List<Person> personsData){
         for(Person person : personsData){
-            int personId = MySql.setDataInAddressTable(person);
-            MySql.setDataInPersonsTable(person, personId);
+            try {
+                Integer addressId = MySql.personIsPresent(person);
+                if(addressId != null){
+                    {
+                        MySql.updateDataInAddressTable(person, addressId);
+                        MySql.updateDataInPersonsTable(person, addressId);
+                    }
+                }
+            int personId = MySql.insertDataInAddressTable(person);
+            MySql.insertDataInPersonsTable(person, personId);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
