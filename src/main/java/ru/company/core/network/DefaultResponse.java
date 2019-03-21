@@ -1,0 +1,14 @@
+package ru.company.core.network;
+
+import com.google.gson.annotations.SerializedName;
+
+public class DefaultResponse<T> {
+
+    @SerializedName("results")
+    private T results;
+
+    public T getResults() {
+        return results;
+    }
+
+}
