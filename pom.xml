@@ -3,17 +3,17 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>Ex1TinkoffFintech</groupId>
-    <artifactId>Ex1TinkoffFintech</artifactId>
+    <groupId>Persons</groupId>
+    <artifactId>Persons</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
 
-    <name>Ex1TinkoffFintech</name>
+    <name>Persons</name>
     <build>
         <resources>
             <resource>
-                <directory>${project.basedir}/src/main/resources</directory>
+                <directory>${project.basedir}src/main/resources/</directory>
                 <includes>
                     <include>**/*.txt</include>
                 </includes>

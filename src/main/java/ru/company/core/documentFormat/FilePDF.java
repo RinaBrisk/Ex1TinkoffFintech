@@ -7,7 +7,6 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import ru.company.core.utils.Helper;
 import ru.company.core.models.Person;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,6 +19,8 @@ public class FilePDF {
     private Font headerFont;
     private Font contentFont;
     private PdfPTable table;
+    private static String FILE_NAME = "/persons.pdf";
+    private static String LANGUAGE_FILE_PATH = "src/main/resources/Times_New_Roman.ttf";
 
     public void filePDFCreating(List<Person> personsData) {
         this.createFilePDF();
@@ -31,12 +32,12 @@ public class FilePDF {
     private void createFilePDF() {
         document = new Document(PageSize.A4.rotate());
         try {
-            PdfWriter.getInstance(document, new FileOutputStream("persons.pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream(System.getProperty("user.dir") + FILE_NAME));
         } catch (DocumentException | FileNotFoundException e) {
             e.printStackTrace();
         }
         document.open();
-        System.out.println("Файл создан. Путь: Ex1TinkoffFintech/persons.pdf");
+        System.out.println("Файл создан. Путь: " + System.getProperty("user.dir") + FILE_NAME);
         setFont();
     }
 
@@ -44,7 +45,7 @@ public class FilePDF {
         BaseFont baseFont;
 
         try {
-            baseFont = BaseFont.createFont("src/main/resources/Times_New_Roman.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            baseFont = BaseFont.createFont(LANGUAGE_FILE_PATH, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             headerFont = new Font(baseFont, 10, Font.BOLD);
             contentFont = new Font(baseFont, 10);
         } catch (DocumentException | IOException e) {

@@ -11,7 +11,7 @@ public class Workbook {
     private XSSFWorkbook book;
     private XSSFSheet sheet;
     private FileOutputStream fileOut;
-  //  private static final String BOOK_PATH = System.getProperty("user.home") + "\\Desktop\\persons.xlsx";
+    private static String FILE_NAME = "/persons.xlsx";
 
     public void workbookCreating(List<Person> personsData) {
         this.createBook();
@@ -24,11 +24,12 @@ public class Workbook {
 
         book = new XSSFWorkbook();
         try {
-            fileOut = new FileOutputStream("persons.xlsx");
+            fileOut = new FileOutputStream(System.getProperty("user.dir") + FILE_NAME);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        System.out.println("Файл создан. Путь: Ex1TinkoffFintech/persons.xlsx");
+
+        System.out.println("Файл создан. Путь: " + System.getProperty("user.dir") + FILE_NAME);
         sheet = book.createSheet("Страница 1");
     }
 

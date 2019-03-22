@@ -1,7 +1,6 @@
 package ru.company.core.utils;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,11 +21,14 @@ public class Helper {
     private static final String[] tableHeaders = {"Фамилия", "Имя", "Отчество", "Возраст", "Пол(м/ж)",
             "Дата рождения", "ИНН", "Почтовый индекс", "Страна", "Область", "Город", "Улица", "Дом", "Квартира"};
     private static List<String> mySqlConnection;
+    private static String RES_PATH = "src/main/resources/";
 
     public static List<String> getMaleNames() {
         return maleNames;
     }
-    public static List<String> getMaleSurnames() { return maleSurnames; }
+    public static List<String> getMaleSurnames() {
+        return maleSurnames;
+    }
     public static List<String> getMalePatronymics() {
         return malePatronymics;
     }
@@ -57,27 +59,22 @@ public class Helper {
     public static String getMySqlConnection(int i) {
         return mySqlConnection.get(i);
     }
-
     public static void createFileResources() {
 
-        try {
-            maleNames = readFromFile(String.valueOf(Paths.get(Objects.requireNonNull(Helper.class.getClassLoader().getResource("MaleNames.txt")).toURI())));
-            maleSurnames = readFromFile(String.valueOf(Paths.get(Objects.requireNonNull(Helper.class.getClassLoader().getResource("MaleSurnames.txt")).toURI())));
-            malePatronymics = readFromFile(String.valueOf(Paths.get(Objects.requireNonNull(Helper.class.getClassLoader().getResource("MalePatronymics.txt")).toURI())));
+        maleNames = readFromFile(RES_PATH + "MaleNames.txt");
+        maleSurnames = readFromFile(RES_PATH + "MaleSurnames.txt");
+        malePatronymics = readFromFile(RES_PATH + "MalePatronymics.txt");
 
-            femaleNames = readFromFile(String.valueOf(Paths.get(Objects.requireNonNull(Helper.class.getClassLoader().getResource("FemaleNames.txt")).toURI())));
-            femaleSurnames = readFromFile(String.valueOf(Paths.get(Objects.requireNonNull(Helper.class.getClassLoader().getResource("FemaleSurnames.txt")).toURI())));
-            femalePatronymics = readFromFile(String.valueOf(Paths.get(Objects.requireNonNull(Helper.class.getClassLoader().getResource("FemalePatronymics.txt")).toURI())));
+        femaleNames = readFromFile(RES_PATH + "FemaleNames.txt");
+        femaleSurnames = readFromFile(RES_PATH + "FemaleSurnames.txt");
+        femalePatronymics = readFromFile(RES_PATH + "FemalePatronymics.txt");
 
-            countries = readFromFile(String.valueOf(Paths.get(Objects.requireNonNull(Helper.class.getClassLoader().getResource("Countries.txt")).toURI())));
-            areas = readFromFile(String.valueOf(Paths.get(Objects.requireNonNull(Helper.class.getClassLoader().getResource("Areas.txt")).toURI())));
-            streets = readFromFile(String.valueOf(Paths.get(Objects.requireNonNull(Helper.class.getClassLoader().getResource("Streets.txt")).toURI())));
-            cities = readFromFile(String.valueOf(Paths.get(Objects.requireNonNull(Helper.class.getClassLoader().getResource("Cities.txt")).toURI())));
+        countries = readFromFile(RES_PATH + "Countries.txt");
+        areas = readFromFile(RES_PATH + "Areas.txt");
+        streets = readFromFile(RES_PATH + "Streets.txt");
+        cities = readFromFile(RES_PATH + "Cities.txt");
 
-            mySqlConnection = readFromFile(String.valueOf(Paths.get(Objects.requireNonNull(Helper.class.getClassLoader().getResource("MySqlConnection.txt")).toURI())));
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        mySqlConnection = readFromFile(RES_PATH + "MySqlConnection.txt");
     }
 
     public static int randBetween(int start, int end) {

@@ -11,6 +11,7 @@ public class Main {
     public static void main(String[] args) {
 
 
+        //Helper helper = new Helper();
         Helper.createFileResources();
 
         int numberOfPersons = Person.getNumberOfPersons();
