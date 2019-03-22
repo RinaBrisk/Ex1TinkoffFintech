@@ -14,7 +14,7 @@ mvn clean package
 Исполняемый файл будет создан в папке **target**.
 Для запуска введите в командной строке:
 ```
-java -jar target/Ex1TinkoffFintech-1.0-jar-with-dependencies.jar
+java -jar target/Persons-1.0-jar-with-dependencies.jar
 ```
 Подключение к базе
 --------------------
